@@ -1,4 +1,6 @@
-create table author(
+DROP TABLE IF EXISTS Author;
+
+create table Author(
 	authorId binary(16) not null,
 	authorActivationToken char(32),
 	authorAvatarUrl varchar(255),
