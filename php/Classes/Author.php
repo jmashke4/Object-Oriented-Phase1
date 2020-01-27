@@ -1,6 +1,13 @@
 <?php
+namespace Jmashke4\ObjectOrientPhase1;
+require_once("autoload.php");
+require_once (dirname(__DIR__). "/lib/vendor/autoload.php");
+
+use Ramsey\Uuid\Uuid;
 
 class Author {
+	use ValidateUuid;
+	use ValidateDate;
 	private $authorId;
 	private $authorActivationToken;
 	private $authorAvatarUrl;
@@ -8,97 +15,72 @@ class Author {
 	private $authorHash;
 	private $authorUserName;
 
-	public function __construct(float $newAuthorId, float $newAuthorActivationToken, float $newAuthorAvatarUrl, float $newAuthorEmail, float $newAuthorHash, float $newAuthorUserName) {
-		$this->setAuthorId($newAuthorId);
-		$this->setAuthorActivationToken($newAuthorActivationToken);
-		$this->setAuthorAvatarUrl($newAuthorAvatarUrl);
-		$this->setAuthorEmail($newAuthorEmail);
-		$this->setAuthorHash($newAuthorHash);
-		$this->setAuthorUserName($newAuthorUserName);
+	public function __construct($newAuthorId, $newAuthorActivationToken, $newAuthorAvatarUrl, $newAuthorEmail, $newAuthorHash,  $newAuthorUserName) {
+		try {
+			$this->setAuthorId($newAuthorId);
+			$this->setAuthorActivationToken($newAuthorActivationToken);
+			$this->setAuthorAvatarUrl($newAuthorAvatarUrl);
+			$this->setAuthorEmail($newAuthorEmail);
+			$this->setAuthorHash($newAuthorHash);
+			$this->setAuthorUserName($newAuthorUserName);
+		}
+		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
 	}
 
-
-	/**
-	 * getter for authorId
-	 */
-	public function getAuthorId() {
+	public function getAuthorId() : Uuid {
 		return $this->authorId;
 	}
 
+	public function setAuthorId($authorId): void {
+		try {
+			$uuid = self::validateUuid($newAuthorId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+		$this->authorId = $uuid;
+	}
 
-	/**
-	 * getter for authorActivationToken
-	 */
 	public function getAuthorActivationToken() {
 		return $this->authorActivationToken;
 	}
 
-	/**
-	 * getter for authorAvatarUrl
-	 */
 	public function getAuthorAvatarUrl() {
 		return $this->authorAvatarUrl;
 	}
 
-	/**
-	 * getter for authorEmail
-	 */
 	public function getAuthorEmail() {
 		return $this->authorEmail;
 	}
 
-	/**
-	 * getter for authorHash
-	 */
 	public function getAuthorHash() {
 		return $this->authorHash;
 	}
 
-	/**
-	 * getter for authorUserName
-	 */
 	public function getAuthorUserName() {
 		return $this->authorUserName;
 	}
 
-	/**
-	 * @param mixed $authorId
-	 */
-	public function setAuthorId($authorId): void {
-		$this->authorId = $authorId;
-	}
 
-	/**
-	 * @param mixed $authorActivationToken
-	 */
 	public function setAuthorActivationToken($authorActivationToken): void {
 		$this->authorActivationToken = $authorActivationToken;
 	}
 
-	/**
-	 * @param mixed $authorAvatarUrl
-	 */
 	public function setAuthorAvatarUrl($authorAvatarUrl): void {
 		$this->authorAvatarUrl = $authorAvatarUrl;
 	}
 
-	/**
-	 * @param mixed $authorEmail
-	 */
 	public function setAuthorEmail($authorEmail): void {
 		$this->authorEmail = $authorEmail;
 	}
 
-	/**
-	 * @param mixed $authorHash
-	 */
 	public function setAuthorHash($authorHash): void {
 		$this->authorHash = $authorHash;
 	}
 
-	/**
-	 * @param mixed $authorUserName
-	 */
 	public function setAuthorUserName($authorUserName): void {
 		$this->authorUserName = $authorUserName;
 	}
