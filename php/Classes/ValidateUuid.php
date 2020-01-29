@@ -1,11 +1,11 @@
 <?php
 namespace Jmashke4\ObjectOrientPhase1;
-require_once (dirname(__DIR__,2). "/lib/vendor/autoload.php");
+require_once (dirname(__DIR__,1). "/vendor/autoload.php");
 use http\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Uuid;
 
 trait ValidateUuid {
-	private static function validateUuid($newUuid) : \Ramsey\Uuid\UuidInterface {
+	private static function validateUuid($newUuid) : \Ramsey\Uuid\Uuid {
 		if(gettype($newUuid) === "string") {
 			if(strlen($newUuid) === 16) {
 				$newUuid = bin2hex($newUuid);
@@ -26,7 +26,7 @@ trait ValidateUuid {
 			throw (new \InvalidArgumentException("invalid uuid"));
 		}
 		if($uuid->getVersion() !== 4) {
-			throw (new \RangeException("uuid is wrong verson"));
+			throw (new \RangeException("uuid is wrong version"));
 		}
 		return($uuid);
 	}

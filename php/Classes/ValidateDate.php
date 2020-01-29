@@ -1,6 +1,5 @@
 <?php
 namespace Jmashke4\ObjectOrientPhase1;
-require_once (dirname(__DIR__,2). "/lib/vendor/autoload.php");
 use http\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Uuid;
 trait ValidateDate {

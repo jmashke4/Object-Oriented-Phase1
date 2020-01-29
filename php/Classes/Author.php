@@ -1,9 +1,9 @@
 <?php
+
 namespace Jmashke4\ObjectOrientPhase1;
 require_once("autoload.php");
-require_once (dirname(__DIR__). "/lib/vendor/autoload.php");
+require_once (dirname(__DIR__) . "/vendor/autoload.php");
 use Ramsey\Uuid\Uuid;
-
 /**
  * Object oriented Phase 1
  *
@@ -80,7 +80,7 @@ class Author {
 	 * mutator method for author id
 	 *
 	 *  @param  Uuid| string $newAuthorId value of new author id
-	 * @throws \RangeException if $newAuthoreId is not positive
+	 * @throws \RangeException if $newAuthorId is not positive
 	 * @throws \TypeError if the author Id is not
 	 */
 
@@ -113,13 +113,13 @@ class Author {
 	 * @throws \TypeError if the activation token is not a string
 	 */
 
-	public function setAuthorActivationToken(?string $newAuthorActivationToken) : void {
+	public function setAuthorActivationToken(string $newAuthorActivationToken) : void {
 		if($newAuthorActivationToken === null) {
 			$this->authorActivationToken = null;
 			return;
 		}
 		$newAuthorActivationToken = strtolower(trim($newAuthorActivationToken));
-		if(ctype_xdigit($newAuthorActivationToken) !== 32) {
+		if(strlen($newAuthorActivationToken) !== 32) {
 			throw (new\RangeException("user activation token has to be 32"));
 		}
 		$this->authorActivationToken = $newAuthorActivationToken;
@@ -184,7 +184,7 @@ class Author {
 		if($authorHashInfo["algoName"] !== "argon2i") {
 			throw (new \InvalidArgumentException("hash is not a valid hash"));
 		}
-		if(strlen($newAuthorHash) !== 97) {
+		if(strlen($newAuthorHash) !== 96) {
 			throw (new \RangeException("hash must be 97 characters"));
 		}
 		$this->authorHash = $newAuthorHash;
@@ -203,7 +203,7 @@ class Author {
 	/**
 	 * mutator method for author username
 	 *
-	 * @param string $newAuthorUserName new value of Username
+	 * @param string $newUserName new value of Username
 	 * @throws \InvalidArgumentException if $newUsername is not a string or insecure
 	 * @throws \RangeException if $newUserName is > 32 characters
 	 * @throws \TypeError if $newUserName is not a string
@@ -225,18 +225,19 @@ class Author {
 	/**
 	 * accessor for Avatar Url
 	 *
-	 * @return avatar url
+	 * @returnr Avatar Url
 	 */
 
 	public function getAuthorAvatarUrl() {
 		return $this->authorAvatarUrl;
 	}
 	/**
-	 * @param $authorAvatarUrl
+	 * @param $newAvatarUrl
 	 */
 
 	public function setAuthorAvatarUrl(string $newAvatarUrl): void {
 		$newAvatarUrl = trim($newAvatarUrl);
+		$newAvatarUrl = filter_var($newAvatarUrl, FILTER_VALIDATE_URL);
 		if(empty($newAvatarUrl) === true) {
 			throw (new \InvalidArgumentException("Avatar Url is empty"));
 		}
